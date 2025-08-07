@@ -1,6 +1,9 @@
+import json
+
+from flask import request, Response
+
 from main import CharsetEditor
 
-<<<<<<< HEAD
 
 class CharsetEd:
     def __init__(self):
@@ -44,22 +47,4 @@ def charset_palindromes():
     return handler.json_response({"palindromes": result})
 
 
-=======
 
-def charset_count(text: str):
-    return CharsetEditor().set_text(text).count_words()
-
-
-def charset_unique(text: str):
-    return CharsetEditor().set_text(text).unique()
-
-
-def charset_remove_duplicates(text: str):
-    result = CharsetEditor().set_text(text).remove_duplicates()
-    return {"result": result}
-
-
-def charset_palindromes(text: str):
-    result = CharsetEditor().set_text(text).palindromes()
-    return {"palindromes": result}
->>>>>>> d97cda4caa3cf172171c2c05d70d63d99f3aa4ea
