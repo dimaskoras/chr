@@ -7,29 +7,44 @@ class CharsetEditor:
     def set_text(self, text):
         self.text = text
         return self
-
+    
 
     def count_words(self):
         counts = dict()
         words = self.text.lower().split()
         for word in words:
-            clean = ''.join(cs for cs in word if cs in self.letters)
+            clean = ''
+            for cs in word:
+                if cs in self.letters:
+                    clean += cs
             if clean:
-                counts[clean] = counts.get(clean, 0) + 1
+                if clean in counts:
+                    counts[clean] += 1
+                else:
+                    counts[clean] = 1
         return counts
+    
 
 
     def unique(self):
         counts = self.count_words()
-        return {w: c for w, c in counts.items() if c == 1}
+        unique_words = {}
+        for w, c in counts.items():
+            if c == 1:
+                unique_words[w] = c
+        return unique_words
+    
 
 
     def remove_duplicates(self):
         seen = set()
         result = []
         words = self.text.lower().split()
-        for word in words:
-            clean = ''.join(cs for cs in word if cs in self.letters)
+        for w in words:
+            clean = ''
+            for cs in w:
+                if cs in self.letters:
+                    clean += cs
             if clean and clean not in seen:
                 seen.add(clean)
                 result.append(clean)
@@ -39,8 +54,11 @@ class CharsetEditor:
     def palindromes(self):
         result = set()
         words = self.text.lower().split()
-        for word in words:
-            clean = ''.join(cs for cs in word if cs in self.letters)
+        for w in words:
+            clean = ''
+            for cs in w:
+                if cs in self.letters:
+                    clean += cs
             if clean and clean == clean[::-1] and len(clean) > 1:
                 result.add(clean)
         return list(result)
