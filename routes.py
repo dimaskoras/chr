@@ -4,34 +4,46 @@ from flask import request, Response
 
 from main import CharsetEditor
 
+
+class CharsetEd:
+    def __init__(self):
+        self.text = request.args.get("query", "")
+        self.editor = CharsetEditor().set_text(self.text)
+
+
+    def get_result(self, method_name):
+        method = getattr(self.editor, method_name)
+        return method()
+
+
+    def json_response(self, data):
+        return Response(
+            json.dumps(data, ensure_ascii=False),
+            content_type="application/json; charset=utf-8"
+        )
+
+
 def charset_count():
-    text = request.args.get("query", "")
-    result = CharsetEditor().set_text(text).count_words()
-    return Response(
-        json.dumps(result, ensure_ascii=False),
-        content_type="application/json; charset=utf-8"
-    )
+    handler = CharsetEd()
+    result = handler.get_result("count_words")
+    return handler.json_response(result)
+
 
 def charset_unique():
-    text = request.args.get("query", "")
-    result = CharsetEditor().set_text(text).unique()
-    return Response(
-        json.dumps(result, ensure_ascii=False),
-        content_type="application/json; charset=utf-8"
-    )
+    handler = CharsetEd()
+    result = handler.get_result("unique")
+    return handler.json_response(result)
+
 
 def charset_remove_duplicates():
-    text = request.args.get("query", "")
-    result = CharsetEditor().set_text(text).remove_duplicates()
-    return Response(
-        json.dumps({"result": result}, ensure_ascii=False),
-        content_type="application/json; charset=utf-8"
-    )
+    handler = CharsetEd()
+    result = handler.get_result("remove_duplicates")
+    return handler.json_response({"result": result})
+
 
 def charset_palindromes():
-    text = request.args.get("query", "")
-    result = CharsetEditor().set_text(text).palindromes()
-    return Response(
-        json.dumps({"palindromes": result}, ensure_ascii=False),
-        content_type="application/json; charset=utf-8"
-    )
+    handler = CharsetEd()
+    result = handler.get_result("palindromes")
+    return handler.json_response({"palindromes": result})
+
+
